@@ -1,19 +1,5 @@
-/* CRITTERS Critter.java
- * EE422C Project 4 submission by
- * Aditya Kharosekar
- * amk3587
- * 16465
- * Rahul Jain
- * rj8656
- * <Student2 5-digit Unique No.>
- * Slip days used: <0>
- * Fall 2016
- */
-package assignment4;
+package assignment5;
 
-/*
- * Example critter
- */
 public class Craig extends Critter {
 	
 	@Override
@@ -83,4 +69,11 @@ public class Craig extends Critter {
 		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * craigs.size()) + "% left   ");
 		System.out.println();
 	}
+	
+	@Override
+	public CritterShape viewShape() { return CritterShape.SQUARE; }
+
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() { return javafx.scene.paint.Color.BLUE; }
+
 }
