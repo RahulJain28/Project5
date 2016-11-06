@@ -1,22 +1,13 @@
 package assignment5;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import static javafx.scene.layout.AnchorPane.*;
-
 public class Main extends Application{
-    static AnchorPane controller = new AnchorPane();
+    static GridPane controller = new GridPane();
     static Canvas canvas = new Canvas();
 	public static void main(String[] args) {
 		launch(args);
@@ -36,14 +27,16 @@ public class Main extends Application{
 
     public void createController(Stage primaryStage) {
         primaryStage.setTitle("Controller");
+        controller.setAlignment(Pos.CENTER);
 
-        Label critterT = new Label("Select Critter type: ");
+
+        /*Label critterT = new Label("Select Critter type: ");
         TextField enterCritterT = new TextField();
-        controller.getChildren().addAll(critterT, enterCritterT);
-        setLeftAnchor(critterT, 8.0);
-        setTopAnchor(critterT, 8.0);
-        setLeftAnchor(enterCritterT, 140.0);
-        setTopAnchor(critterT, 8.0);
+        HBox critterChoice = new HBox();
+        critterChoice.getChildren().addAll(critterT, enterCritterT);
+        controller.getChildren().add(critterChoice);
+        setLeftAnchor(critterChoice, 8.0);
+        setTopAnchor(critterChoice, 8.0);
 
         Label critterN = new Label("Enter number of critters: ");
         TextField enterCritterN = new TextField();
@@ -59,32 +52,21 @@ public class Main extends Application{
         Button make = new Button("Make Critters");
         controller.getChildren().add(make);
         setLeftAnchor(make, 8.0);
-        setTopAnchor(make, 85.0);
+        setTopAnchor(make, 80.0);
 
         Button oneTimeStep = new Button("Perform one time step");
         controller.getChildren().add(oneTimeStep);
         setLeftAnchor(oneTimeStep, 8.0);
         setTopAnchor(oneTimeStep, 130.0);
 
-        Label steps = new Label("Enter number of time steps: ");
-        TextField enterSteps = new TextField();
-        Button processSteps = new Button("Perform time steps");
-        HBox manySteps = new HBox();
-        manySteps.setSpacing(5.0);
-        manySteps.getChildren().addAll(steps, enterSteps, processSteps);
-        controller.getChildren().add(manySteps);
-        setLeftAnchor(manySteps, 8.0);
-        setTopAnchor(manySteps, 170.0);
-
-        Label chooseStats = new Label("Invoke runStats for: ");
-        TextField enterCritterStats = new TextField();
-        Button processStats = new Button("Display");
-        HBox stats = new HBox();
-        stats.setSpacing(5.0);
-        stats.getChildren().addAll(chooseStats, enterCritterStats, processStats);
-        controller.getChildren().add(stats);
-        setLeftAnchor(stats, 8.0);
-        setTopAnchor(stats, 210.0);
+        Label numTimeSteps = new Label("Enter number of time steps: ");
+        TextField enterNumTimeSteps = new TextField();
+        Button multipleTimeSteps = new Button("Perform multiple time steps");
+        HBox timeSteps = new HBox();
+        timeSteps.getChildren().addAll(numTimeSteps, enterNumTimeSteps, multipleTimeSteps);
+        controller.getChildren().add(timeSteps);
+        setLeftAnchor(timeSteps, 8.0);
+        setTopAnchor(timeSteps, 170.0);
 
         Button quit = new Button("Quit");
         quit.setPrefWidth(80);
@@ -100,7 +82,7 @@ public class Main extends Application{
 
         Scene scene = new Scene(controller, 500, 500);
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
     }
 
 
