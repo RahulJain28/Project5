@@ -40,6 +40,29 @@ public class Main extends Application{
 
     public void createController(Stage primaryStage) {
         primaryStage.setTitle("Controller");
+        Label seed = new Label("Set seed to: ");
+        TextField getSeed = new TextField();
+        Button setSeed = new Button("Set Seed");
+        Label seedWarning = new Label("Please enter number");
+        seedWarning.setVisible(false);
+        seedWarning.setTextFill(Color.RED);
+        HBox seedStuff = new HBox();
+        seedStuff.getChildren().addAll(seed, getSeed, setSeed, seedWarning);
+        seedStuff.setSpacing(5.0);
+        setLeftAnchor(seedStuff, 8.0);
+        setTopAnchor(seedStuff, 8.0);
+        controller.getChildren().add(seedStuff);
+        setSeed.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String text = getSeed.getText();
+                if (text.equals("")) {
+                seedWarning.setVisible(true);
+                }
+            }
+        });
+
+
 
         Label critterT = new Label("Select Critter type: ");
         ObservableList<String> options =
@@ -52,10 +75,10 @@ public class Main extends Application{
         critterTypeWarning.setTextFill(Color.RED);
         controller.getChildren().addAll(critterT, comboBox, critterTypeWarning);
         setLeftAnchor(critterT, 8.0);
-        setTopAnchor(critterT, 8.0);
+        setTopAnchor(critterT, 50.0);
         setLeftAnchor(comboBox, 140.0);
-        setTopAnchor(comboBox, 8.0);
-        setTopAnchor(critterTypeWarning, 8.0);
+        setTopAnchor(comboBox, 50.0);
+        setTopAnchor(critterTypeWarning, 50.0);
         setLeftAnchor(critterTypeWarning, 290.0);
 
 
@@ -68,25 +91,25 @@ public class Main extends Application{
         critterNum.getChildren().addAll(critterN, enterCritterN, critterNWarning);
         controller.getChildren().add(critterNum);
         setLeftAnchor(critterNum, 8.0);
-        setTopAnchor(critterNum, 50.0);
+        setTopAnchor(critterNum, 85.0);
 
         Button make = new Button("Make Critters");
         controller.getChildren().add(make);
         setLeftAnchor(make, 8.0);
-        setTopAnchor(make, 85.0);
+        setTopAnchor(make, 120.0);
         make.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 /*First check if input is valid */
                 boolean valid = true;
                 String numText = enterCritterN.getText();
-                String type = comboBox.getValue().toString();
+                Object type = comboBox.getValue();
                 boolean isNumSet=!numText.equals("");
                 if (!isNumSet){
                     valid = false;
                     critterNWarning.setVisible(true);
                 }
-                boolean isTypeSet = !type.equals("");
+                boolean isTypeSet = !(type==null);
                 if (!isTypeSet) {
                     valid = false;
                     critterTypeWarning.setVisible(true);
@@ -96,7 +119,7 @@ public class Main extends Application{
                     try {
                         int num = Integer.parseInt(numText);
                         for (int i = 0; i < num; i++) {
-                            Critter.makeCritter(type);
+                            Critter.makeCritter(type.toString());
                         }
                     }
                     catch (InvalidCritterException e) {
@@ -111,7 +134,7 @@ public class Main extends Application{
         Button oneTimeStep = new Button("Perform one time step");
         controller.getChildren().add(oneTimeStep);
         setLeftAnchor(oneTimeStep, 8.0);
-        setTopAnchor(oneTimeStep, 150.0);
+        setTopAnchor(oneTimeStep, 160.0);
         oneTimeStep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -129,12 +152,12 @@ public class Main extends Application{
         manySteps.getChildren().addAll(steps, enterSteps, timeStepWarning);
         controller.getChildren().add(manySteps);
         setLeftAnchor(manySteps, 8.0);
-        setTopAnchor(manySteps, 190.0);
+        setTopAnchor(manySteps, 200.0);
 
         Button processSteps = new Button("Perform time steps");
         controller.getChildren().add(processSteps);
         setLeftAnchor(processSteps, 8.0);
-        setTopAnchor(processSteps, 220.0);
+        setTopAnchor(processSteps, 230.0);
         processSteps.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -164,12 +187,12 @@ public class Main extends Application{
         stats.getChildren().addAll(chooseStats, enterCritterStats, statsWarning);
         controller.getChildren().add(stats);
         setLeftAnchor(stats, 8.0);
-        setTopAnchor(stats, 285.0);
+        setTopAnchor(stats, 295.0);
 
         Button processStats = new Button("Display");
         controller.getChildren().add(processStats);
         setLeftAnchor(processStats, 8.0);
-        setTopAnchor(processStats, 310.0);
+        setTopAnchor(processStats, 320.0);
         processStats.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -196,7 +219,7 @@ public class Main extends Application{
 
 
 
-        Scene scene = new Scene(controller, 500, 500);
+        Scene scene = new Scene(controller, 550, 380);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
