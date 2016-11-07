@@ -16,16 +16,49 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.util.ArrayList;
+
+import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 import static javafx.scene.layout.AnchorPane.*;
 
 
 public class Main extends Application{
     static AnchorPane controller = new AnchorPane();
     static Canvas canvas = new Canvas();
+    static ArrayList<String> listOfJavaFiles = new ArrayList<>();
+    static ArrayList<String> listOfPossibleClasses = new ArrayList<>();
+    static String packageName = Critter.class.getPackage().toString().split(" ")[1];
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+    public void findClasses() throws InvalidCritterException {
+        File folder = new File("src/assignment5");
+        File[] listOfFiles = folder.listFiles();
+        for (int i =0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].getName().endsWith(".java")) {
+                listOfJavaFiles.add(listOfFiles[i].getName());
+            }
+        }
+        for (String s: listOfJavaFiles) {
+            listOfPossibleClasses.add(s);
+        }
+
+        for (int i=0; i < listOfPossibleClasses.size(); i++) {
+            try {
+                Class myClass = Class.forName(packageName + "." + listOfPossibleClasses.get(i));
+                Critter c = (Critter) myClass.newInstance();
+            }
+            catch(Exception e){
+                listOfPossibleClasses.remove(listOfPossibleClasses.get(i));
+                printStackTrace();
+                //i--;
+            }
+
+        }
+        System.out.println(Main.listOfPossibleClasses);
+    }
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -33,13 +66,19 @@ public class Main extends Application{
 
         }
         catch (Exception e) {
-            System.out.println("Oops");
+            System.out.println(e.toString());
         }
 
     }
 
     public void createController(Stage primaryStage) {
         primaryStage.setTitle("Controller");
+        try {
+            findClasses();
+        }
+        catch (InvalidCritterException e) {
+
+        }
         Label seed = new Label("Set seed to: ");
         TextField getSeed = new TextField();
         Button setSeed = new Button("Set Seed");
@@ -58,6 +97,10 @@ public class Main extends Application{
                 String text = getSeed.getText();
                 if (text.equals("")) {
                 seedWarning.setVisible(true);
+                }
+                else {
+                    long num = (long) Integer.parseInt(text);
+                    Critter.setSeed(num);
                 }
             }
         });
