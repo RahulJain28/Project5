@@ -43,7 +43,39 @@ public abstract class Critter {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
 	}
 	
-	protected String look(int direction, boolean steps) {return "";}
+	protected String look(int direction, boolean steps) {
+		this.energy = this.energy -= Params.look_energy_cost; 
+		int x = this.x_coord;
+		int y = this.y_coord;
+		if(steps){
+	        if (direction==0 || direction==1 || direction==7)
+	            x+=2;
+	        else if (direction==3 || direction==4 || direction==5)
+	            x-=2;
+	        if (direction==1 || direction==2 || direction==3)
+	            y-=2;
+	        else if (direction==5 || direction==6 || direction==7) 
+	            y+=2;
+		}
+		else{
+			 if (direction==0 || direction==1 || direction==7) 
+		        x+=1;
+		     else if (direction==3 || direction==4 || direction==5) 
+		        x-=1;
+	         if (direction==1 || direction==2 || direction==3) 
+		        y-=1;
+		     else if (direction==5 || direction==6 || direction==7) 
+		        y+=1;
+		}
+		if(this.x_coord >= Params.world_width) this.x_coord = this.x_coord - Params.world_width;
+	    if(this.x_coord < 0) 				  this.x_coord = this.x_coord + Params.world_width;
+	    if(this.y_coord >= Params.world_height)this.y_coord = this.y_coord - Params.world_height;
+	    if(this.y_coord < 0) 				  this.y_coord = this.y_coord + Params.world_height;
+	    for(Critter a : population){
+	    	if(a.x_coord == x && a.y_coord == y) return a.toString();
+	    } 
+	    return null; 
+	}
 	
 	/* rest is unchanged from Project 4 */
 	
@@ -399,10 +431,12 @@ public abstract class Critter {
 			if(a_roll >= b_roll){
 				a.energy = a.energy + (b.energy/2);
 				b.energy = 0;
+				population.remove(b);
 			}
 			else{
 				b.energy = b.energy + (a.energy/2);
 				a.energy = 0;
+				population.remove(a);
 			}
 		}
 		
