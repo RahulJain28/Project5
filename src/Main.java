@@ -221,13 +221,17 @@ public class Main extends Application{
         });
 
         Label chooseStats = new Label("Invoke runStats for: ");
-        TextField enterCritterStats = new TextField();
+        ObservableList<String> statsOptions =
+                FXCollections.observableArrayList(
+                        "Option 1", "Option 2", "Option 3"
+                );
+        ComboBox statsChoice = new ComboBox(statsOptions);
         Label statsWarning = new Label("Please select critter");
         statsWarning.setVisible(false);
         statsWarning.setTextFill(Color.RED);
         HBox stats = new HBox();
         stats.setSpacing(5.0);
-        stats.getChildren().addAll(chooseStats, enterCritterStats, statsWarning);
+        stats.getChildren().addAll(chooseStats, statsChoice, statsWarning);
         controller.getChildren().add(stats);
         setLeftAnchor(stats, 8.0);
         setTopAnchor(stats, 295.0);
@@ -239,11 +243,12 @@ public class Main extends Application{
         processStats.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String text = enterCritterStats.getText();
-                /*Checking if user has actually entered input */
-                boolean isSet = !text.equals("");
-                if (!isSet) {
+                Object s =statsChoice.getValue();
+                if (s==null) {
                     statsWarning.setVisible(true);
+                }
+                else {
+                    //TODO: actually call runstats function
                 }
             }
         });
