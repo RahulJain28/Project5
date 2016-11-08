@@ -47,6 +47,10 @@ public abstract class Critter {
 		this.energy = this.energy -= Params.look_energy_cost; 
 		int x = this.x_coord;
 		int y = this.y_coord;
+		if(!fight){
+			x = this.oldx;
+			y = this.oldy;
+		}
 		if(steps){
 	        if (direction==0 || direction==1 || direction==7)
 	            x+=2;
@@ -71,10 +75,17 @@ public abstract class Critter {
 	    if(this.x_coord < 0) 				  this.x_coord = this.x_coord + Params.world_width;
 	    if(this.y_coord >= Params.world_height)this.y_coord = this.y_coord - Params.world_height;
 	    if(this.y_coord < 0) 				  this.y_coord = this.y_coord + Params.world_height;
+	    if(fight){
+		    for(Critter a : population){
+		    	if(a.x_coord == x && a.y_coord == y) return a.toString();
+		    } 
+		    return null;
+	    }
 	    for(Critter a : population){
-	    	if(a.x_coord == x && a.y_coord == y) return a.toString();
-	    } 
+	    	if(a.oldx == x && a.oldy == y) return a.toString();
+	    }  
 	    return null; 
+	  
 	}
 	
 	/* rest is unchanged from Project 4 */
@@ -98,6 +109,8 @@ public abstract class Critter {
 	
 	private int x_coord;
 	private int y_coord;
+	private int oldx;
+	private int oldy; 
 
     /**
      * Update critter's energy and then update it's position by 1 step in chosen direction
@@ -367,6 +380,8 @@ public abstract class Critter {
 
         /*Invoking timeStep for all critters */
         for (int i = 0; i < population.size(); i++) {
+        	population.get(i).oldx = population.get(i).x_coord;
+        	population.get(i).oldy = population.get(i).y_coord;
         	population.get(i).hasMoved= false;
             population.get(i).doTimeStep();
             population.get(i).fight = false;
@@ -392,7 +407,6 @@ public abstract class Critter {
                 i--;
             }
         }
-    //    System.out.println(population.size());
         
         /*Adding babies to general population */
         for (Critter c: babies) {
@@ -449,6 +463,7 @@ public abstract class Critter {
     public static void displayWorld() {
 		int rows = Params.world_height;
 		int columns = Params.world_width;
+		Main.View(population); 
 		String[][] display = new String[rows + 2][columns + 2];
 		display[0][0] = "+";
 		display[rows + 1][0] = "+";
