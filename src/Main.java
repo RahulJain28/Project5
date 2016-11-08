@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -14,17 +15,27 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import assignment5.Critter.CritterShape;
 
 import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 import static javafx.scene.layout.AnchorPane.*;
 
 
 public class Main extends Application{
-    static AnchorPane controller = new AnchorPane();
+	static Stage displayStage = new Stage();
+	static AnchorPane controller = new AnchorPane();
     static Canvas canvas = new Canvas();
     static ArrayList<String> listOfJavaFiles = new ArrayList<>();
     static ArrayList<String> listOfPossibleClasses = new ArrayList<>();
@@ -52,8 +63,7 @@ public class Main extends Application{
             }
             catch(Exception e){
                 listOfPossibleClasses.remove(listOfPossibleClasses.get(i));
-                printStackTrace();
-                //i--;
+                // i--;
             }
 
         }
@@ -270,6 +280,123 @@ public class Main extends Application{
         Scene scene = new Scene(controller, 550, 380);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
+        try{
+        	Critter.makeCritter("Critter1");
+        	 Critter.displayWorld();
+            Critter.worldTimeStep();
+            TimeUnit.SECONDS.sleep(5);
+            Critter.worldTimeStep();
 
+        	Critter.makeCritter("AlgaephobicCritter");
+        	 Critter.worldTimeStep();
+        	 Critter.worldTimeStep();
+        }catch(Exception e){
+        	
+        }
+        Critter.displayWorld();
+    }
+    
+    public static void View(List<Critter> population, List<Integer> x_coord, List<Integer> y_coord){
+    	Group display = new Group();
+    	int rows = Params.world_height;
+		int columns = Params.world_width;
+		int height = rows*20;
+		int width = columns*20;
+		List<Line> lines = new ArrayList<Line>();
+		for(int i = 1; i<= columns; i++){
+			int x = i*(width/columns);
+			lines.add(new Line(x,0,x ,height));
+		}
+		for(int i = 1; i<= rows; i++){
+			int y = i*(height/rows);
+			lines.add(new Line(0,y,width ,y));
+		}
+		for(int i =0; i<population.size(); i++){
+			CritterShape shape = population.get(i).viewShape();
+			int x = x_coord.get(i)*(width/columns);
+			int y = y_coord.get(i)*(height/rows); 
+			if(shape == CritterShape.CIRCLE){
+				Circle cir = new Circle(x+((width/columns)/2), y+((height/rows)/2), Math.min(width/columns, (height/rows)/2));
+				cir.setFill(population.get(i).viewFillColor());
+				cir.setStroke(population.get(i).viewOutlineColor());
+				cir.setStrokeWidth(1.5);
+				display.getChildren().addAll(cir);
+			}
+			if(shape == CritterShape.SQUARE){
+				Rectangle rec = new Rectangle(x,y,width/columns,height/rows);
+				rec.setFill(population.get(i).viewFillColor());
+				rec.setStroke(population.get(i).viewOutlineColor());
+				rec.setStrokeWidth(1.5);
+				display.getChildren().addAll(rec);
+			}
+			if(shape == CritterShape.TRIANGLE){
+				Polygon triangle = new Polygon();
+				triangle.getPoints().addAll(new Double[]{
+						(double)x, (double)y+(height/rows),
+						(double)(x + (width/columns)), (double)y+(height/rows),
+						(double)x + ((width/columns)/2), (double)y
+				});
+				triangle.setFill(population.get(i).viewFillColor());
+				triangle.setStroke(population.get(i).viewOutlineColor());
+				triangle.setStrokeWidth(1.5);
+				display.getChildren().addAll(triangle);
+			}
+			if(shape == CritterShape.DIAMOND){
+				Polygon diamond = new Polygon();
+				diamond.getPoints().addAll(new Double[]{
+						(double)x, (double)y+((height/rows)/2),
+						(double)x + ((width/columns)/2), (double)y,
+						(double)x + (width/columns), (double)y+((height/rows)/2),
+						(double)x + ((width/columns)/2), (double)y+(height/rows)
+				});
+				diamond.setFill(population.get(i).viewFillColor());
+				diamond.setStroke(population.get(i).viewOutlineColor());
+				diamond.setStrokeWidth(1.5);
+				display.getChildren().addAll(diamond);
+			}
+			if(shape == CritterShape.STAR){
+				Polygon triangle = new Polygon();
+				triangle.getPoints().addAll(new Double[]{
+						(double)x, (double)y+(height/rows)- (double)((height/rows)/4),
+						(double)(x + (width/columns)), (double)y+(height/rows) - (double)((height/rows)/4),
+						(double)x + ((width/columns)/2), (double)y
+				});
+				Polygon triangle2 = new Polygon();
+				triangle2.getPoints().addAll(new Double[]{
+						(double)x, (double)y+(double)((height/rows)/4),
+						(double)(x + (width/columns)), (double)y + (double)((height/rows)/4),
+						(double)x + ((width/columns)/2), (double)y +(height/rows)
+				});
+				triangle.setFill(population.get(i).viewFillColor());
+				triangle.setStroke(population.get(i).viewOutlineColor());
+				triangle2.setFill(population.get(i).viewFillColor());
+				triangle2.setStroke(population.get(i).viewOutlineColor());
+				display.getChildren().addAll(triangle,triangle2);
+			}
+				
+		}
+//		int x = 5*(width/columns);
+//		int y = 6*(height/rows); 
+//		Polygon triangle = new Polygon();
+//		triangle.getPoints().addAll(new Double[]{
+//				(double)x, (double)y+(height/rows)- (double)((height/rows)/4),
+//				(double)(x + (width/columns)), (double)y+(height/rows) - (double)((height/rows)/4),
+//				(double)x + ((width/columns)/2), (double)y
+//		});
+//		Polygon triangle2 = new Polygon();
+//		triangle2.getPoints().addAll(new Double[]{
+//				(double)x, (double)y+(double)((height/rows)/4),
+//				(double)(x + (width/columns)), (double)y + (double)((height/rows)/4),
+//				(double)x + ((width/columns)/2), (double)y +(height/rows)
+//		});
+//		triangle.setFill(Color.WHITE);
+//		triangle.setStroke(Color.GREEN);
+//		triangle.setStrokeWidth(1.5);
+//		display.getChildren().addAll(triangle);
+		display.getChildren().addAll(lines);
+		Scene scene = new Scene(display, width, height);
+		displayStage.setTitle("Display");
+		displayStage.setScene(scene);
+        displayStage.show();
+    }
 }

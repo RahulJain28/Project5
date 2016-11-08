@@ -1,5 +1,6 @@
 package assignment5;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Critter {
@@ -463,36 +464,42 @@ public abstract class Critter {
     public static void displayWorld() {
 		int rows = Params.world_height;
 		int columns = Params.world_width;
-		Main.View(population); 
-		String[][] display = new String[rows + 2][columns + 2];
-		display[0][0] = "+";
-		display[rows + 1][0] = "+";
-		display[0][columns+1] = "+";
-		display[rows+1][columns+1] = "+";
-		
-		for(int i = 1; i<= columns; i++) {
-			display[0][i]="-";
-			display[rows + 1][i]="-";
+		List<Integer> x = new ArrayList<Integer>(); 
+		List<Integer> y = new ArrayList<Integer>(); 
+		for(Critter a: population){
+			x.add(a.x_coord);
+			y.add(a.y_coord);
 		}
-		for(int i = 1; i<= rows; i++) {
-			display[i][0]="|";
-			display[i][columns+1]="|";
-		}
-
-		for(Critter c: population){
-			display[c.y_coord + 1][c.x_coord+1] = c.toString();
-		}
-		
-		for(int i=0; i<rows+2; i++){
-			for(int j=0; j<columns+2; j++){
-				if((display[i][j] == null)) 
-					System.out.print(" ");
-				else	
-					System.out.print(display[i][j]);
-			}
-			System.out.print("\n");
-		}
-        
+		Main.View(population,x,y); 
+//		String[][] display = new String[rows + 2][columns + 2];
+//		display[0][0] = "+";
+//		display[rows + 1][0] = "+";
+//		display[0][columns+1] = "+";
+//		display[rows+1][columns+1] = "+";
+//		
+//		for(int i = 1; i<= columns; i++) {
+//			display[0][i]="-";
+//			display[rows + 1][i]="-";
+//		}
+//		for(int i = 1; i<= rows; i++) {
+//			display[i][0]="|";
+//			display[i][columns+1]="|";
+//		}
+//
+//		for(Critter c: population){
+//			display[c.y_coord + 1][c.x_coord+1] = c.toString();
+//		}
+//		
+//		for(int i=0; i<rows+2; i++){
+//			for(int j=0; j<columns+2; j++){
+//				if((display[i][j] == null)) 
+//					System.out.print(" ");
+//				else	
+//					System.out.print(display[i][j]);
+//			}
+//			System.out.print("\n");
+//		}
+//        
 		
 	}
 }
