@@ -55,15 +55,18 @@ public class Main extends Application{
         for (String s: listOfJavaFiles) {
             listOfPossibleClasses.add(s);
         }
-
+        System.out.println(Main.listOfJavaFiles);
         for (int i=0; i < listOfPossibleClasses.size(); i++) {
             try {
-                Class myClass = Class.forName(packageName + "." + listOfPossibleClasses.get(i));
+            	String file = listOfPossibleClasses.get(i);
+            	file = file.substring(0, file.length()-5);
+                Class myClass = Class.forName(packageName + "." + file);
                 Critter c = (Critter) myClass.newInstance();
             }
             catch(Exception e){
-                listOfPossibleClasses.remove(listOfPossibleClasses.get(i));
-                // i--;
+               listOfPossibleClasses.remove(i);
+               i--;
+          //     e.printStackTrace();
             }
 
         }
@@ -192,6 +195,7 @@ public class Main extends Application{
             @Override
             public void handle(ActionEvent event) {
                 Critter.worldTimeStep();
+                Critter.displayWorld();
             }
         });
 
@@ -284,14 +288,13 @@ public class Main extends Application{
         	Critter.makeCritter("Critter1");
         	 Critter.displayWorld();
             Critter.worldTimeStep();
-            TimeUnit.SECONDS.sleep(5);
             Critter.worldTimeStep();
-
+            Critter.makeCritter("Algae");
         	Critter.makeCritter("AlgaephobicCritter");
         	 Critter.worldTimeStep();
         	 Critter.worldTimeStep();
         }catch(Exception e){
-        	
+        	e.printStackTrace();
         }
         Critter.displayWorld();
     }
