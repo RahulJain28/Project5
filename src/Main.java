@@ -61,7 +61,7 @@ public class Main extends Application{
             	String file = listOfPossibleClasses.get(i);
             	file = file.substring(0, file.length()-5);
             	System.out.println(file);
-                Class myClass = Class.forName(packageName + "." + "AlgaephobicCritter");
+                Class myClass = Class.forName(packageName + "." + file);
                 Critter c = (Critter) myClass.newInstance();
             }
             catch(Exception e){
@@ -115,6 +115,7 @@ public class Main extends Application{
                 else {
                     long num = (long) Integer.parseInt(text);
                     Critter.setSeed(num);
+                    seedWarning.setVisible(false);
                 }
             }
         });
@@ -122,11 +123,8 @@ public class Main extends Application{
 
 
         Label critterT = new Label("Select Critter type: ");
-        ObservableList<String> options =
-                FXCollections.observableArrayList(
-                      "Option 1", "Option 2", "Option 3"
-                );
-        ComboBox comboBox = new ComboBox(options);
+        ObservableList<String> options = FXCollections.observableArrayList(listOfPossibleClasses);
+        ComboBox<String> comboBox = new ComboBox<>(options);
         Label critterTypeWarning = new Label("Please select critter");
         critterTypeWarning.setVisible(false);
         critterTypeWarning.setTextFill(Color.RED);
@@ -136,7 +134,7 @@ public class Main extends Application{
         setLeftAnchor(comboBox, 140.0);
         setTopAnchor(comboBox, 50.0);
         setTopAnchor(critterTypeWarning, 50.0);
-        setLeftAnchor(critterTypeWarning, 290.0);
+        setLeftAnchor(critterTypeWarning, 370.0);
 
 
         Label critterN = new Label("Enter number of critters: ");
@@ -176,8 +174,11 @@ public class Main extends Application{
                     try {
                         int num = Integer.parseInt(numText);
                         for (int i = 0; i < num; i++) {
-                            Critter.makeCritter(type.toString());
+                            Critter.makeCritter(type.toString().substring(0, type.toString().length()-5));
                         }
+                        critterNWarning.setVisible(false);
+                        critterTypeWarning.setVisible(false);
+                        Critter.displayWorld();
                     }
                     catch (InvalidCritterException e) {
                         //TODO: What should we do here?
@@ -231,17 +232,15 @@ public class Main extends Application{
                     for (int i = 0; i < num; i++) {
                         Critter.worldTimeStep();
                     }
+                    timeStepWarning.setVisible(false);
                 }
                 Critter.displayWorld();
             }
         });
 
         Label chooseStats = new Label("Invoke runStats for: ");
-        ObservableList<String> statsOptions =
-                FXCollections.observableArrayList(
-                        "Option 1", "Option 2", "Option 3"
-                );
-        ComboBox statsChoice = new ComboBox(statsOptions);
+        ObservableList<String> statsOptions = FXCollections.observableArrayList(listOfPossibleClasses);
+        ComboBox<String> statsChoice = new ComboBox<>(statsOptions);
         Label statsWarning = new Label("Please select critter");
         statsWarning.setVisible(false);
         statsWarning.setTextFill(Color.RED);
@@ -283,22 +282,22 @@ public class Main extends Application{
 
 
 
-        Scene scene = new Scene(controller, 550, 380);
+        Scene scene = new Scene(controller, 600, 380);
         primaryStage.setScene(scene);
         primaryStage.show();
-        try{
-        	Critter.makeCritter("Critter1");
-        	 Critter.displayWorld();
-            Critter.worldTimeStep();
-            Critter.worldTimeStep();
-            Critter.makeCritter("Algae");
-        	Critter.makeCritter("AlgaephobicCritter");
-        	 Critter.worldTimeStep();
-        	 Critter.worldTimeStep();
-        }catch(Exception e){
-        	e.printStackTrace();
-        }
-        Critter.displayWorld();
+//        try{
+//        	Critter.makeCritter("Critter1");
+//        	 Critter.displayWorld();
+//            Critter.worldTimeStep();
+//            Critter.worldTimeStep();
+//            Critter.makeCritter("Algae");
+//        	Critter.makeCritter("AlgaephobicCritter");
+//        	 Critter.worldTimeStep();
+//        	 Critter.worldTimeStep();
+//        }catch(Exception e){
+//        	e.printStackTrace();
+//        }
+//        Critter.displayWorld();
     }
     
     public static void View(List<Critter> population, List<Integer> x_coord, List<Integer> y_coord){
