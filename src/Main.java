@@ -60,13 +60,14 @@ public class Main extends Application{
             try {
             	String file = listOfPossibleClasses.get(i);
             	file = file.substring(0, file.length()-5);
-                Class myClass = Class.forName(packageName + "." + file);
+            	System.out.println(file);
+                Class myClass = Class.forName(packageName + "." + "AlgaephobicCritter");
                 Critter c = (Critter) myClass.newInstance();
             }
             catch(Exception e){
                listOfPossibleClasses.remove(i);
                i--;
-          //     e.printStackTrace();
+               e.printStackTrace();
             }
 
         }
@@ -231,6 +232,7 @@ public class Main extends Application{
                         Critter.worldTimeStep();
                     }
                 }
+                Critter.displayWorld();
             }
         });
 

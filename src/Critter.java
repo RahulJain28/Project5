@@ -470,6 +470,7 @@ public abstract class Critter {
 			x.add(a.x_coord);
 			y.add(a.y_coord);
 		}
+		System.out.println(population.size());
 		Main.View(population,x,y); 
 //		String[][] display = new String[rows + 2][columns + 2];
 //		display[0][0] = "+";
