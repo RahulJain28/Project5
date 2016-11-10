@@ -280,8 +280,9 @@ public abstract class Critter {
 	 * Prints out how many Critters of each type there are on the board.
 	 * @param critters List of Critters.
 	 */
-	public static void runStats(List<Critter> critters) {
-		System.out.print("" + critters.size() + " critters as follows -- ");
+	public static String runStats(List<Critter> critters) {
+		String output = ""; 
+		
 		java.util.Map<String, Integer> critter_count = new java.util.HashMap<String, Integer>();
 		for (Critter crit : critters) {
 			String crit_string = crit.toString();
@@ -294,11 +295,41 @@ public abstract class Critter {
 		}
 		String prefix = "";
 		for (String s : critter_count.keySet()) {
-			System.out.print(prefix + s + ":" + critter_count.get(s));
+			output+= critter_count.get(s) + " are alive";
 			prefix = ", ";
 		}
-		System.out.println();		
+		if(output.equals("")) output += "None exist"; 
+		return output + "\n";		
 	}
+//	public static String runStats(String name) {
+//		
+//		String output = ""; 
+//	//	output += "" + critters.size() + " critters as follows -- ";
+//		java.util.Map<String, Integer> critter_count = new java.util.HashMap<String, Integer>();
+//		System.out.println(population.size());
+//		for (Critter crit : population) {
+//			String crit_string = crit.toString();
+//			Integer old_count = critter_count.get(crit_string);
+//			if (old_count == null) {
+//				critter_count.put(crit_string,  1);
+//			} else {
+//				critter_count.put(crit_string, old_count.intValue() + 1);
+//			}
+//		}
+//		String prefix = "";
+//		System.out.println("keyset " + critter_count.size());
+//		System.out.println(name);
+//		for (String s : critter_count.keySet()) {
+//			System.out.println(s);
+//			if(s.equals(name)){
+//				output += critter_count.get(s) + " are alive";
+//				prefix = ", ";
+//			}
+//		}
+//		if(output.equals("")) output += "None exist"; 
+//		return output + "\n"; 
+//		
+//	}
 	
 	/* the TestCritter class allows some critters to "cheat". If you want to 
 	 * create tests of your Critter model, you can create subclasses of this class

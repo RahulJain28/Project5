@@ -23,6 +23,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -34,8 +35,11 @@ import static javafx.scene.layout.AnchorPane.*;
 
 
 public class Main extends Application{
+	boolean firstrun = false; 
 	static Stage displayStage = new Stage();
+	static Stage statsStage = new Stage();
 	static AnchorPane controller = new AnchorPane();
+	Label  statsLabel = new Label();
     static Canvas canvas = new Canvas();
     static ArrayList<String> listOfJavaFiles = new ArrayList<>();
     static ArrayList<String> listOfPossibleClasses = new ArrayList<>();
@@ -77,7 +81,6 @@ public class Main extends Application{
     public void start(Stage primaryStage) {
         try {
             createController(primaryStage);
-
         }
         catch (Exception e) {
             System.out.println(e.toString());
@@ -85,6 +88,29 @@ public class Main extends Application{
 
     }
 
+    public void createStatsWindow(String className) {
+    	try{
+    		AnchorPane stats = new AnchorPane();
+    		java.util.List<Critter> result = Critter.getInstances(className);
+	    	statsStage.setTitle("Run Stats Window");
+	    	Class <?> newCritter = Class.forName(packageName + "." + className);
+	    	Critter c = (Critter)newCritter.newInstance();
+	    	String name = c.toString();
+	    	Method m = newCritter.getMethod("runStats", List.class);
+	    	String output = className + " stats: \n";
+	    	output += (String) m.invoke(null, result); 
+	    	statsLabel.setText(output);
+	    	stats.getChildren().add(statsLabel);
+			Scene scene =  new Scene(stats, 600, 300);
+	    	setTopAnchor(statsLabel, 8.0);
+	        setLeftAnchor(statsLabel, 8.0);
+	    	statsStage.setScene(scene);
+	    	statsStage.show();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	
+    }
     public void createController(Stage primaryStage) {
         primaryStage.setTitle("Controller");
         try {
@@ -263,7 +289,7 @@ public class Main extends Application{
                     statsWarning.setVisible(true);
                 }
                 else {
-                    //TODO: actually call runstats function
+                	createStatsWindow(s.toString().substring(0,s.toString().length()-5));
                 }
             }
         });

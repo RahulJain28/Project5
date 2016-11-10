@@ -12,25 +12,32 @@
 
 package assignment5;
 
+import assignment5.Critter.CritterShape;
+
 /**
  * Created by Aditya Kharosekar
  * This critter's fight() function will always return true. It will fight with any Critter.
  * It randomly decides a direction to walk in.
- * It's toString() representation is "4"
+ * It's toString() representation is "7"
  * It will always reproduce and its baby will be placed in the same direction that the parent was moving
  */
-public class Critter4 extends Critter {
+public class Critter7 extends Critter {
 
     public void doTimeStep() {
         int direction = getRandomInt(8);
         walk(direction);
-        Critter4 baby = new Critter4();
+        Critter7 baby = new Critter7();
         reproduce(baby, direction);
     }
     public boolean fight(String fightStatus) {
         return true;
     }
     public String toString() {
-        return "4";
+        return "7";
     }
+    @Override
+    public CritterShape viewShape() { return CritterShape.TRIANGLE; }
+
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() { return javafx.scene.paint.Color.ORANGE; }
 }

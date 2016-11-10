@@ -29,8 +29,12 @@ public class Critter1 extends Critter {
         count++;
     }
     public boolean fight(String f) {
+    	if(this.look(1, true) == null){
+    		return false;
+    	}
     	if(3+5+9+6*Critter.getRandomInt(8) > 45)
     		return true;
+    	
     	return false;
     }
     public void doTimeStep() {
